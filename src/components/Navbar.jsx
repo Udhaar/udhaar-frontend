@@ -1,19 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import GlobalContext from "../GlobalContext";
 
 export default function Navbar() {
-  const [navOpen, setNavOpen] = useState(true);
-
+  const globalContext = useContext(GlobalContext);
   return (
     <div
-      // className={`${
-      //   navOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
-      // } w-screen md:w-full md:col-span-2 h-screen bg-black bg-opacity-50 absolute left-0 top-0 flex flex-shrink-0 flex-grow-0 justify-between md:static col-span-2 overflow-hidden transition -translate-x-full duration-250 ease-in-out`}
-      className={`${navOpen ? "bg-opacity-50" : "bg-opacity-0"}
-      w-screen md:w-full md:col-span-2 h-screen bg-black absolute left-0 top-0 md:static transition duration-200 ease-in-out`}
+      className={`${
+        globalContext.state.navbarOpen
+          ? "translate-x-0"
+          : "-translate-x-full md:translate-x-0"
+      }
+      w-screen md:w-full md:col-span-2 h-screen bg-black bg-opacity-50 absolute left-0 top-0 md:static transition duration-200 ease-in-out`}
     >
       <div
         className={`${
-          navOpen ? "translate-x-0" : "-translate-x-full"
+          globalContext.state.navbarOpen
+            ? "translate-x-0"
+            : "-translate-x-full  md:translate-x-0"
         } flex flex-shrink-0 flex-grow-0 justify-between w-full transition duration-200 ease-in-out transform`}
       >
         <div className={` w-64 md:w-full bg-primary h-screen `}>
@@ -25,7 +28,7 @@ export default function Navbar() {
           viewBox="0 0 20 20"
           fill="white"
           onClick={() => {
-            setNavOpen(false);
+            globalContext.dispatch("close_navbar");
           }}
         >
           <path
