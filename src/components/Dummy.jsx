@@ -6,9 +6,9 @@ export default function Dummy() {
   return (
     <div>
       <button
-        className="bg-red-300"
+        className="bg-red-300 px-3 py-5 rounded-md"
         onClick={() => {
-          globalContext.dispatch("open_navbar");
+          globalContext.dispatch({ type: "open_navbar" });
         }}
       >
         Openmn
