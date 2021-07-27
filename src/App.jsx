@@ -8,7 +8,7 @@ export default function App() {
       <div className="bg-green-600">
         <div className="grid grid-cols-10">
           <Navbar />
-          <div className="col-span-8">
+          <div className="col-span-8 h-screen">
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Neque
             vitae eveniet fugit, ex voluptate saepe cupiditate sed aspernatur
             commodi voluptatem! Eos nobis delectus reprehenderit temporibus
