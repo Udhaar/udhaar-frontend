@@ -6,8 +6,10 @@ import { Link } from "react-router-dom";
 import AccentedLink from "../components/typography/AccentedLink";
 import SecondaryLogo from "../components/Images/SecondaryLogo";
 import { signin } from "../api/api";
+import { useHistory } from "react-router";
 
 const Login = () => {
+  const history = useHistory();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -18,7 +20,8 @@ const Login = () => {
     const response = await signin(formData, []);
     if (response[0].status === 200) {
       localStorage.setItem("access_token", `Token ${response[1]["token"]}`);
-      // window.location.reload();
+      history.push("/transactions");
+      window.location.reload();
     }
   };
 
