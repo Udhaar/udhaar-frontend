@@ -1,4 +1,5 @@
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const baseUrl = "https://api.udhaar.me/api";
 
 export const FireRequest = async (

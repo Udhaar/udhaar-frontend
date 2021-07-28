@@ -5,36 +5,65 @@ import LargeButton from "../components/buttons/LargeButton";
 import { Link } from "react-router-dom";
 import AccentedLink from "../components/typography/AccentedLink";
 import SecondaryLogo from "../components/Images/SecondaryLogo";
+import { signup } from "../api/api";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useHistory } from "react-router";
 
 const Register = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const history = useHistory();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    first_name: "",
+    last_name: "",
+  });
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    const response = await signup(formData, []);
+    if (response[0].status === 201) {
+      toast.success("Registration successful!");
+      history.push("/login");
+    }
+  }
+
   return (
-    <div className="min-h-screen w-full bg-primary flex flex-col flex-shrink-0 flex-grow-0 items-center py-20 px-5">
+    <div className="min-h-screen w-full bg-primary flex flex-col flex-shrink-0 flex-grow-0 items-center pt-20 px-5">
       <SecondaryLogo />
       <p class="text-xl mt-2 text-secondary">Debt management made easy</p>
       <form
         action=""
         className="bg-secondary flex flex-col px-8 pt-8 pb-3 rounded-lg text-gray-800 mt-10"
+        onSubmit={handleSubmit}
       >
         <div className="flex flex-col md:flex-row md:gap-2">
           <TextInput
-            value={lastName}
-            setValue={setLastName}
+            value={formData.first_name}
+            setValue={(e) =>
+              setFormData({ ...formData, first_name: e.target.value })
+            }
             placeholder="First Name"
           />
           <TextInput
-            value={firstName}
-            setValue={setFirstName}
+            value={formData.last_name}
+            setValue={(e) =>
+              setFormData({ ...formData, last_name: e.target.value })
+            }
             placeholder="Last Name"
           />
         </div>
-        <TextInput value={email} setValue={setEmail} placeholder="Email" />
+        <TextInput
+          value={formData.email}
+          setValue={(e) => setFormData({ ...formData, email: e.target.value })}
+          placeholder="Email"
+        />
         <PasswordInput
-          value={password}
-          setValue={setPassword}
+          value={formData.password}
+          setValue={(e) =>
+            setFormData({ ...formData, password: e.target.value })
+          }
           placeholder="Password"
         />
         <LargeButton

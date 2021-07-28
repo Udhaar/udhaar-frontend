@@ -5,22 +5,42 @@ import LargeButton from "../components/buttons/LargeButton";
 import { Link } from "react-router-dom";
 import AccentedLink from "../components/typography/AccentedLink";
 import SecondaryLogo from "../components/Images/SecondaryLogo";
+import { signin } from "../api/api";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await signin(formData, []);
+    if (response[0].status === 200) {
+      localStorage.setItem("access_token", `Token ${response[1]["token"]}`);
+      // window.location.reload();
+    }
+  };
+
   return (
-    <div className="min-h-screen w-full bg-primary flex flex-col flex-shrink-0 flex-grow-0 items-center py-20 px-5">
+    <div className="min-h-screen w-full bg-primary flex flex-col flex-shrink-0 flex-grow-0 items-center pt-20 px-5">
       <SecondaryLogo />
       <p class="text-xl mt-2 text-secondary">Debt management made easy</p>
       <form
         action=""
         className="bg-secondary flex flex-col px-8 pt-8 pb-3 rounded-lg text-gray-800 mt-10"
+        onSubmit={(e) => handleSubmit(e)}
       >
-        <TextInput value={email} setValue={setEmail} placeholder="Email" />
+        <TextInput
+          value={formData.email}
+          setValue={(e) => setFormData({ ...formData, email: e.target.value })}
+          placeholder="Email"
+        />
         <PasswordInput
-          value={password}
-          setValue={setPassword}
+          value={formData.password}
+          setValue={(e) =>
+            setFormData({ ...formData, password: e.target.value })
+          }
           placeholder="Password"
         />
         <LargeButton

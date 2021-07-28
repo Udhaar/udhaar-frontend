@@ -6,9 +6,7 @@ const TextInput = ({ placeholder, value, setValue }) => {
       type="text"
       placeholder={placeholder}
       value={value}
-      onChange={(e) => {
-        setValue(e.target.value);
-      }}
+      onChange={setValue}
       className="w-full max-w-5xl block
        bg-primary mb-3 text-lg px-4 py-3 rounded-lg outline-none"
     />
