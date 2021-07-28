@@ -12,7 +12,7 @@ export default function Navbar() {
           ? "translate-x-0"
           : "-translate-x-full md:translate-x-0"
       }
-      w-screen md:w-full md:col-span-2 h-screen bg-black bg-opacity-50 absolute left-0 top-0 md:static transition duration-200 ease-in-out`}
+      w-screen md:w-80 h-screen bg-black bg-opacity-50 absolute left-0 top-0 md:static transition duration-200 ease-in-out`}
     >
       <div
         className={`${
