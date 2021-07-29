@@ -12,7 +12,7 @@ export default function Navbar() {
           ? "translate-x-0"
           : "-translate-x-full md:translate-x-0"
       }
-      w-screen md:w-80 h-screen bg-black bg-opacity-50 absolute left-0 top-0 md:static transition duration-200 ease-in-out`}
+      w-screen md:w-auto h-screen bg-black bg-opacity-50 absolute  left-0 top-0 md:static transition duration-200 ease-in-out`}
     >
       <div
         className={`${
@@ -84,7 +84,10 @@ export default function Navbar() {
               path="/notifications"
             />
           </div>
-          <LargeButton text="Logout" widthClass="w-5/6" />
+          <LargeButton
+            text="Logout"
+            widthClass="w-5/6 bg-secondary text-white font-semibold"
+          />
         </div>
         <svg
           xmlns="http://www.w3.org/2000/svg"

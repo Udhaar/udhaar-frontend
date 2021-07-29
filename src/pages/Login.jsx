@@ -28,7 +28,7 @@ const Login = () => {
   return (
     <div className="min-h-screen w-full bg-primary flex flex-col flex-shrink-0 flex-grow-0 items-center pt-20 px-5">
       <SecondaryLogo />
-      <p class="text-xl mt-2 text-secondary">Debt management made easy</p>
+      <p className="text-xl mt-2 text-secondary">Debt management made easy</p>
       <form
         action=""
         className="bg-secondary flex flex-col px-8 pt-8 pb-3 rounded-lg text-gray-800 mt-10"

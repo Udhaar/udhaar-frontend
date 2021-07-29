@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-const baseUrl = "https://api.udhaar.me/api";
+const baseUrl = "https://udhaar-staging.herokuapp.com/api";
 
 export const FireRequest = async (
   method,
@@ -47,8 +47,10 @@ export const FireRequest = async (
       return Promise.all([response, data]);
     })
     .then((res) => {
-      if (res[0].status === 401) toast.error("Unauthorized access denied");
-      else if (res[0].status === 405) toast.error("Permission denied");
+      if (res[0].status === 401) {
+        toast.error("Unauthorized access denied");
+        localStorage.removeItem("access_token");
+      } else if (res[0].status === 405) toast.error("Permission denied");
       else if (res[0].status >= 400) {
         for (var k in res[1]) {
           if (typeof res[1][k] === "string")
