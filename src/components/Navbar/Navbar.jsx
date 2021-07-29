@@ -1,28 +1,32 @@
-import React, { useState, useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import GlobalContext from "../../GlobalContext";
 import LargeButton from "../buttons/LargeButton";
 import NavbarLink from "./NavbarLink";
 import { Link } from "react-router-dom";
 export default function Navbar() {
   const globalContext = useContext(GlobalContext);
+  const hideNavbar = useCallback(() => {
+    globalContext.dispatch({ type: "close_navbar" });
+  }, [globalContext]);
   return (
     <div
       className={`${
         globalContext.state.navbarOpen
           ? "translate-x-0"
-          : "-translate-x-full md:translate-x-0"
+          : "-translate-x-full md2:translate-x-0"
       }
-      w-screen md:w-auto h-screen bg-black bg-opacity-50 absolute  left-0 top-0 md:static transition duration-200 ease-in-out`}
+      w-screen md2:w-auto h-screen bg-black bg-opacity-50 absolute  left-0 top-0 md2:static transition duration-200 ease-in-out`}
+      // onClick={hideNavbar}
     >
       <div
         className={`${
           globalContext.state.navbarOpen
             ? "translate-x-0"
-            : "-translate-x-full  md:translate-x-0"
+            : "-translate-x-full  md2:translate-x-0"
         } flex flex-shrink-0 flex-grow-0 justify-between w-full transition duration-200 ease-in-out transform`}
       >
         <div
-          className={` w-64 md:w-full bg-primary h-screen flex flex-col items-center py-6 justify-between`}
+          className={` w-64 md2:w-full bg-primary h-screen flex flex-col items-center py-6 justify-between`}
         >
           <Link to="/">
             <svg
@@ -91,12 +95,10 @@ export default function Navbar() {
         </div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-9 w-10 mr-2 mt-2 md:hidden"
+          className="h-9 w-10 mr-2 mt-2 md2:hidden"
           viewBox="0 0 20 20"
           fill="white"
-          onClick={() => {
-            globalContext.dispatch({ type: "close_navbar" });
-          }}
+          onClick={hideNavbar}
         >
           <path
             fillRule="evenodd"

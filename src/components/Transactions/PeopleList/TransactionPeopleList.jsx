@@ -1,16 +1,35 @@
-import React from "react";
+import React, { useContext } from "react";
 import { PeopleListItem } from "./PeopleListItem";
+import GlobalContext from "../../../GlobalContext";
 
-export const TransactionPeopleList = () => {
+export const TransactionPeopleList = ({ balances }) => {
+  const globalContext = useContext(GlobalContext);
   return (
     <>
       <div className="flex flex-col justify-between items-between h-screen">
         <div className="py-2 px-3">
-          <input
-            type="text"
-            placeholder="Find people"
-            className="w-full rounded-lg text-lg px-4 py-2 top-0 inline-block outline-none border-none bg-primary "
-          />
+          <div className="flex flex-shrink-0 flex-grow-0 items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-7 w-7 mr-2 border-1 border-primary md:hidden text-secondary"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              onClick={() => {
+                globalContext.dispatch({ type: "open_navbar" });
+              }}
+            >
+              <path
+                fillRule="evenodd"
+                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <input
+              type="text"
+              placeholder="Find people"
+              className="w-full rounded-lg text-lg px-4 py-2 top-0 inline-block outline-none border-none bg-primary "
+            />
+          </div>
           <div className="flex text-sm justify-between my-2 gap-2">
             <div className="bg-primary rounded-md px-2 py-1 flex-1">
               <label>Sort by :</label>
@@ -37,84 +56,16 @@ export const TransactionPeopleList = () => {
           </div>
         </div>
         <div className="overflow-auto flex-grow ">
-          <PeopleListItem
-            firstName="Divya"
-            lastName="Garg"
-            balance="30"
-            email="divya@divya.com"
-          />
-          <PeopleListItem
-            firstName="Divya"
-            lastName="Garg"
-            balance="30"
-            email="divya@divya.com"
-          />
-          <PeopleListItem
-            firstName="Divya"
-            lastName="Garg"
-            balance="30"
-            email="divya@divya.com"
-          />
-          <PeopleListItem
-            firstName="Divya"
-            lastName="Garg"
-            balance="30"
-            email="divya@divya.com"
-          />
-          <PeopleListItem
-            firstName="Divya"
-            lastName="Garg"
-            balance="30"
-            email="divya@divya.com"
-          />
-          <PeopleListItem
-            firstName="Divya"
-            lastName="Garg"
-            balance="30"
-            email="divya@divya.com"
-          />
-          <PeopleListItem
-            firstName="Divya"
-            lastName="Garg"
-            balance="30"
-            email="divya@divya.com"
-          />
-          <PeopleListItem
-            firstName="Divya"
-            lastName="Garg"
-            balance="30"
-            email="divya@divya.com"
-          />
-          <PeopleListItem
-            firstName="Divya"
-            lastName="Garg"
-            balance="30"
-            email="divya@divya.com"
-          />
-          <PeopleListItem
-            firstName="Divya"
-            lastName="Garg"
-            balance="30"
-            email="divya@divya.com"
-          />
-          <PeopleListItem
-            firstName="Divya"
-            lastName="Garg"
-            balance="30"
-            email="divya@divya.com"
-          />
-          <PeopleListItem
-            firstName="Divya"
-            lastName="Garg"
-            balance="30"
-            email="divya@divya.com"
-          />
-          <PeopleListItem
-            firstName="Divya"
-            lastName="Garg"
-            balance="30"
-            email="divya@divya.com"
-          />
+          {balances.map((balance) => (
+            <PeopleListItem
+              firstName={balance.user.first_name}
+              balance={balance.balance}
+              lastName={balance.user.last_name}
+              email={balance.user.email}
+              key={balance.user.external_id}
+              external_id={balance.user.external_id}
+            />
+          ))}
         </div>
       </div>
     </>

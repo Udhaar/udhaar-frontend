@@ -11,7 +11,7 @@ export const MainRouter = () => {
         <div className="col-span-2">
           <Navbar />
         </div>
-        <div className="col-span-10 md:col-span-8">
+        <div className="col-span-10 md2:col-span-8">
           <Switch>
             <Route path="/" exact>
               <Transactions />

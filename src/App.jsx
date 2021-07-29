@@ -17,12 +17,11 @@ export default function App() {
     const access_token = localStorage.getItem("access_token");
     if (access_token) {
       const response = await getCurrentUser();
-      console.log(response);
       if (response[0].status === 200) {
         dispatch({ type: "set_current_user", value: response[1] });
       }
     }
-  });
+  }, []);
 
   return (
     <GlobalContext.Provider value={{ state: state, dispatch: dispatch }}>
