@@ -26,7 +26,7 @@ export default function App() {
   return (
     <GlobalContext.Provider value={{ state: state, dispatch: dispatch }}>
       <div className="h-screen bg-white">
-        {state.currentUser ? <MainRouter /> : <BeforeLoginRouter />}
+        {state?.currentUser ? <MainRouter /> : <BeforeLoginRouter />}
       </div>
     </GlobalContext.Provider>
   );

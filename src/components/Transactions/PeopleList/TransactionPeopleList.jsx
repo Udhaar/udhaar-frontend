@@ -1,9 +1,21 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { PeopleListItem } from "./PeopleListItem";
 import GlobalContext from "../../../GlobalContext";
+import { TransactionContext } from "../../../pages/Transactions";
 
-export const TransactionPeopleList = ({ balances }) => {
+export const TransactionPeopleList = () => {
+  // useEffect(() => {
+  //   console.log("in useEffect");
+  // }, []);
   const globalContext = useContext(GlobalContext);
+  const transactionContext = useContext(TransactionContext);
+  // const balances = transactionContext.state?.balances;
+  // console.log(transactionContext);
+  const [newstate, setnewstate] = useState({});
+  useEffect(() => {
+    // transactionContext.dispatch({ type: "refresh_people" });
+  }, []);
+
   return (
     <>
       <div className="flex flex-col justify-between items-between h-screen">
@@ -11,7 +23,7 @@ export const TransactionPeopleList = ({ balances }) => {
           <div className="flex flex-shrink-0 flex-grow-0 items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-7 w-7 mr-2 border-1 border-primary md:hidden text-secondary"
+              className="h-7 w-7 mr-2 border-1 border-primary md2:hidden text-secondary"
               viewBox="0 0 20 20"
               fill="currentColor"
               onClick={() => {
@@ -56,16 +68,20 @@ export const TransactionPeopleList = ({ balances }) => {
           </div>
         </div>
         <div className="overflow-auto flex-grow ">
-          {balances.map((balance) => (
-            <PeopleListItem
-              firstName={balance.user.first_name}
-              balance={balance.balance}
-              lastName={balance.user.last_name}
-              email={balance.user.email}
-              key={balance.user.external_id}
-              external_id={balance.user.external_id}
-            />
-          ))}
+          {transactionContext?.state?.balances?.length > 0 ? (
+            transactionContext.state.balances.map((balance) => (
+              <PeopleListItem
+                firstName={balance.user.first_name}
+                balance={balance.balance}
+                lastName={balance.user.last_name}
+                email={balance.user.email}
+                key={balance.user.external_id}
+                external_id={balance.user.external_id}
+              />
+            ))
+          ) : (
+            <div>No people</div>
+          )}
         </div>
       </div>
     </>

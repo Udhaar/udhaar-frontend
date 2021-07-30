@@ -3,11 +3,15 @@ import GlobalContext from "../../GlobalContext";
 import LargeButton from "../buttons/LargeButton";
 import NavbarLink from "./NavbarLink";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
+
 export default function Navbar() {
   const globalContext = useContext(GlobalContext);
   const hideNavbar = useCallback(() => {
     globalContext.dispatch({ type: "close_navbar" });
   }, [globalContext]);
+  const history = useHistory();
+
   return (
     <div
       className={`${
@@ -91,6 +95,11 @@ export default function Navbar() {
           <LargeButton
             text="Logout"
             widthClass="w-5/6 bg-secondary text-white font-semibold"
+            onClick={() => {
+              localStorage.removeItem("access_token");
+              history.push("/login");
+              globalContext.dispatch("close_navbar");
+            }}
           />
         </div>
         <svg

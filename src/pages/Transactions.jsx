@@ -1,29 +1,61 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import Dummy from "../components/Dummy";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  useReducer,
+  createContext,
+} from "react";
 import { TransactionPeopleList } from "../components/Transactions/PeopleList/TransactionPeopleList";
 import GlobalContext from "../GlobalContext";
 import { useParams } from "react-router-dom";
-import { peopleList } from "../api/api";
+import { getBalances, transactionList } from "../api/api";
+import { TransactionHistory } from "../components/Transactions/TransactionHistory/TransactionHistory";
+
+const initialState = {
+  selectedUser: null,
+  transactions: null,
+  balances: null,
+};
+
+const reducer = (state, action) => {
+  let response = null;
+  switch (action.type) {
+    case "set_selected_user":
+      return { ...state, selectedUser: action.value };
+    // case "refresh_transactions":
+    //   response = await transactionList({
+    //     external_id: state.selectedUser,
+    //   });
+    //   if (response[0].status === 200) {
+    //     return { ...state, transactions: response[1].results };
+    //   }
+    //   return { ...state };
+    case "refresh_people":
+      return { ...state, balances: action.value };
+  }
+};
+
+export const TransactionContext = createContext();
 
 export default function Transactions() {
   const { external_id } = useParams();
-  const [balances, setBalances] = useState([]);
-  //  const [selectedPerson, setSelectedPerson] = useState(null);
+  const [transactionsState, transactionsDispatch] = useReducer(
+    reducer,
+    initialState
+  );
+
   const globalContext = useContext(GlobalContext);
 
   const refreshPeopleList = useCallback(async () => {
-    const response = await peopleList();
+    const response = await getBalances();
     if (response[0].status === 200) {
-      setBalances(response[1].results);
+      transactionsDispatch({
+        type: "refresh_people",
+        value: response[1].results,
+      });
     }
-  }, [peopleList, setBalances]);
-
-  // const fetchPeopleList = async () => {
-  //   const response = await peopleList();
-  //   if (response[0].status === 200) {
-  //     setPeople(response[1].results);
-  //   }
-  // };
+  }, [getBalances]);
 
   useEffect(() => {
     globalContext.dispatch({ type: "set_current_page", value: "transactions" });
@@ -33,37 +65,31 @@ export default function Transactions() {
     };
   }, []);
 
-  // useEffect(async () => {
-  //   if (external_id) {
-  //     const response = await getBalance({ external_id: external_id });
-  //     if (response[0].status === 200) setSelectedPerson(response[1]);
-  //   }
-  // }, [external_id, people]);
-
-  // const globalState = {
-  //   fetchPeopleList: fetchPeopleList,
-  // };
-
   return (
-    <div className="grid grid-cols-8">
-      <div
-        className={`md:border-l-2 md:border-r-2 border-secondary h-screen ${
-          external_id
-            ? "hidden md:block col-span-3"
-            : "col-span-8 md:col-span-3"
-        }`}
-      >
-        <TransactionPeopleList balances={balances} />
+    <TransactionContext.Provider
+      value={{ state: transactionsState, dispatch: transactionsDispatch }}
+    >
+      <div className="grid grid-cols-8">
+        <div
+          className={`md:border-l-2 md:border-r-2 border-secondary h-screen ${
+            external_id
+              ? "hidden md:block col-span-3"
+              : "col-span-8 md:col-span-3"
+          }`}
+        >
+          <TransactionPeopleList />
+        </div>
+        <div
+          className={` ${
+            external_id
+              ? "col-span-8 md:col-span-5"
+              : "hidden md:block col-span-5"
+          }`}
+        >
+          {/* something */}
+          <TransactionHistory external_id={external_id} />
+        </div>
       </div>
-      <div
-        className={` ${
-          external_id
-            ? "col-span-8 md:col-span-5"
-            : "hidden md:block col-span-5"
-        }`}
-      >
-        something <Dummy />
-      </div>
-    </div>
+    </TransactionContext.Provider>
   );
 }
