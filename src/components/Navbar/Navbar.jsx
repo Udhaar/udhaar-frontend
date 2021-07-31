@@ -102,7 +102,7 @@ export default function Navbar() {
               onClick={() => {
                 localStorage.removeItem("access_token");
                 history.push("/login");
-                dispatch(closeNavbar());
+                window.location.reload();
               }}
             />
           </div>
