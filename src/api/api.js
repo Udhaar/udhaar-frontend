@@ -28,7 +28,7 @@ export const getCurrentUser = () => {
   return FireRequest("GET", `/user/me/`, {}, false, {}, null, true);
 };
 
-export const peopleList = () => {
+export const getBalances = () => {
   return FireRequest("GET", `/balance/`, {}, false, {}, null, true);
 };
 

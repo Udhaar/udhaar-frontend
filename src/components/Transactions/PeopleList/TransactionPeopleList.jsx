@@ -1,9 +1,18 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { PeopleListItem } from "./PeopleListItem";
-import GlobalContext from "../../../GlobalContext";
+import { TransactionContext } from "../../../pages/Transactions";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBalances } from "../../../redux/balances/actions";
+import { openNavbar } from "../../../redux/ui/actions";
 
-export const TransactionPeopleList = ({ balances }) => {
-  const globalContext = useContext(GlobalContext);
+export const TransactionPeopleList = () => {
+  const [newstate, setnewstate] = useState({});
+  const dispatch = useDispatch();
+  const balances = useSelector((state) => state.balance.balances);
+  useEffect(() => {
+    dispatch(fetchBalances());
+  }, []);
+
   return (
     <>
       <div className="flex flex-col justify-between items-between h-screen">
@@ -11,11 +20,11 @@ export const TransactionPeopleList = ({ balances }) => {
           <div className="flex flex-shrink-0 flex-grow-0 items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-7 w-7 mr-2 border-1 border-primary md:hidden text-secondary"
+              className="h-7 w-7 mr-2 border-1 border-primary md2:hidden text-secondary"
               viewBox="0 0 20 20"
               fill="currentColor"
               onClick={() => {
-                globalContext.dispatch({ type: "open_navbar" });
+                dispatch(openNavbar());
               }}
             >
               <path
@@ -56,16 +65,20 @@ export const TransactionPeopleList = ({ balances }) => {
           </div>
         </div>
         <div className="overflow-auto flex-grow ">
-          {balances.map((balance) => (
-            <PeopleListItem
-              firstName={balance.user.first_name}
-              balance={balance.balance}
-              lastName={balance.user.last_name}
-              email={balance.user.email}
-              key={balance.user.external_id}
-              external_id={balance.user.external_id}
-            />
-          ))}
+          {balances?.length > 0 ? (
+            balances?.map((balance) => (
+              <PeopleListItem
+                firstName={balance.user.first_name}
+                balance={balance.balance}
+                lastName={balance.user.last_name}
+                email={balance.user.email}
+                key={balance.user.external_id}
+                external_id={balance.user.external_id}
+              />
+            ))
+          ) : (
+            <div>No people</div>
+          )}
         </div>
       </div>
     </>

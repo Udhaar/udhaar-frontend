@@ -1,28 +1,31 @@
 import React, { useCallback, useContext } from "react";
-import GlobalContext from "../../GlobalContext";
+// import GlobalContext from "../../GlobalContext";
 import LargeButton from "../buttons/LargeButton";
 import NavbarLink from "./NavbarLink";
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
+import { closeNavbar } from "../../redux/ui/actions";
+
 export default function Navbar() {
-  const globalContext = useContext(GlobalContext);
-  const hideNavbar = useCallback(() => {
-    globalContext.dispatch({ type: "close_navbar" });
-  }, [globalContext]);
+  // const globalContext = useContext(GlobalContext);
+  const history = useHistory();
+  const navbarOpen = useSelector((state) => {
+    return state.ui.navbarOpen;
+  });
+  const currentPage = useSelector((state) => state.ui.currentPage);
+  const dispatch = useDispatch();
+
   return (
     <div
       className={`${
-        globalContext.state.navbarOpen
-          ? "translate-x-0"
-          : "-translate-x-full md2:translate-x-0"
+        navbarOpen ? "translate-x-0" : "-translate-x-full md2:translate-x-0"
       }
       w-screen md2:w-auto h-screen bg-black bg-opacity-50 absolute  left-0 top-0 md2:static transition duration-200 ease-in-out`}
-      // onClick={hideNavbar}
     >
       <div
         className={`${
-          globalContext.state.navbarOpen
-            ? "translate-x-0"
-            : "-translate-x-full  md2:translate-x-0"
+          navbarOpen ? "translate-x-0" : "-translate-x-full  md2:translate-x-0"
         } flex flex-shrink-0 flex-grow-0 justify-between w-full transition duration-200 ease-in-out transform`}
       >
         <div
@@ -64,33 +67,38 @@ export default function Navbar() {
           <div className="w-full">
             <NavbarLink
               title="Transactions"
-              selected={globalContext.state.currentPage === "transactions"}
+              selected={currentPage === "transactions"}
               path="/transactions"
             />
             <NavbarLink
               title="Personal"
-              selected={globalContext.state.currentPage === "personal"}
+              selected={currentPage === "personal"}
               path="/personal"
             />
             <NavbarLink
               title="Prefrences"
-              selected={globalContext.state.currentPage === "prefrences"}
+              selected={currentPage === "prefrences"}
               path="/prefrences"
             />
             <NavbarLink
               title="Profile"
-              selected={globalContext.state.currentPage === "profile"}
+              selected={currentPage === "profile"}
               path="/profile"
             />
             <NavbarLink
               title="Notifications"
-              selected={globalContext.state.currentPage === "notifications"}
+              selected={currentPage === "notifications"}
               path="/notifications"
             />
           </div>
           <LargeButton
             text="Logout"
             widthClass="w-5/6 bg-secondary text-white font-semibold"
+            onClick={() => {
+              localStorage.removeItem("access_token");
+              history.push("/login");
+              dispatch(closeNavbar());
+            }}
           />
         </div>
         <svg
@@ -98,7 +106,9 @@ export default function Navbar() {
           className="h-9 w-10 mr-2 mt-2 md2:hidden"
           viewBox="0 0 20 20"
           fill="white"
-          onClick={hideNavbar}
+          onClick={() => {
+            dispatch(closeNavbar());
+          }}
         >
           <path
             fillRule="evenodd"
