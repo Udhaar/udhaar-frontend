@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Transactions from "../pages/Transactions";
 import Navbar from "../components/Navbar/Navbar";
-import { getCurrentUser } from "../api/api";
 
 export const MainRouter = () => {
   return (
