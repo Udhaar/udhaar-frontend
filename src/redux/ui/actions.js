@@ -1,3 +1,4 @@
+import { getCurrentUser } from "../../api/api";
 export const OPEN_NAVBAR = "OPEN_NAVBAR";
 export const CLOSE_NAVBAR = "CLOSE_NAVBAR";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
@@ -28,5 +29,13 @@ export const setCurrentPage = (page) => {
   return {
     type: SET_CURRENT_PAGE,
     payload: page,
+  };
+};
+
+export const fetchCurrentUser = () => {
+  return (dispatch) => {
+    getCurrentUser().then((response) => {
+      response[0].status === 200 && dispatch(setCurrentUser(response[1]));
+    });
   };
 };

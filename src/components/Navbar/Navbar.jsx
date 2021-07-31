@@ -13,6 +13,7 @@ export default function Navbar() {
   const navbarOpen = useSelector((state) => {
     return state.ui.navbarOpen;
   });
+  const currentUser = useSelector((state) => state.ui.currentUser);
   const currentPage = useSelector((state) => state.ui.currentPage);
   const dispatch = useDispatch();
 
@@ -91,15 +92,20 @@ export default function Navbar() {
               path="/notifications"
             />
           </div>
-          <LargeButton
-            text="Logout"
-            widthClass="w-5/6 bg-secondary text-white font-semibold"
-            onClick={() => {
-              localStorage.removeItem("access_token");
-              history.push("/login");
-              dispatch(closeNavbar());
-            }}
-          />
+          <div className="w-full">
+            <span className="block text-center text-xl font-semibold mb-2">
+              Hi {currentUser.first_name}
+            </span>
+            <LargeButton
+              text="Logout"
+              widthClass="w-5/6 mx-auto bg-secondary block text-white font-semibold"
+              onClick={() => {
+                localStorage.removeItem("access_token");
+                history.push("/login");
+                dispatch(closeNavbar());
+              }}
+            />
+          </div>
         </div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
