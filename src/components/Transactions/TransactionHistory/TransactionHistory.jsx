@@ -1,47 +1,29 @@
 import React, { useState, useEffect, useContext } from "react";
-import { getBalance, transactionList } from "../../../api/api";
 import { PendingTransactionsCarousel } from "./PendingTransactionsCarousel";
-import { TransactionContext } from "../../../pages/Transactions";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  fetchSelectedUser,
+  fetchTransactions,
+} from "../../../redux/transactions/actions";
 
 export const TransactionHistory = ({ external_id }) => {
-  const [personInfo, setPersonInfo] = useState(null);
-  const [transactions, setTransactions] = useState([]);
   const [pendingTransactions, setPendingTransactions] = useState([]);
-  const transactionContext = useContext(TransactionContext);
+  const dispatch = useDispatch();
+
   useEffect(async () => {
     if (external_id) {
-      transactionContext.dispatch({
-        type: "set_selected_user",
-        value: external_id,
-      });
-      transactionContext.dispatch({
-        type: "refresh_transactions",
-        value: "",
-      });
+      dispatch(fetchSelectedUser(external_id));
+      dispatch(fetchTransactions(external_id));
     }
   }, [external_id]);
 
-  useEffect(async () => {
-    if (personInfo) {
-      const response = await transactionList({
-        user_external_id: personInfo.user.external_id,
-      });
-      if (response[0].status === 200) {
-        setTransactions(
-          response[1].results.sort((t1, t2) => {
-            return t1.created_date - t2.created_date || t1.status - t2.status;
-          })
-        );
-      }
-    }
-  }, [personInfo]);
+  const personInfo = useSelector((state) => state.transaction.selectedUser);
+  const transactions = useSelector((state) => state.transaction.transactions);
 
   useEffect(() => {
     if (personInfo) {
       setPendingTransactions(
-        transactions.filter((transaction) => {
-          return transaction.status === 1;
-        })
+        transactions.filter((transaction) => transaction.status === 1)
       );
     }
   }, [transactions]);

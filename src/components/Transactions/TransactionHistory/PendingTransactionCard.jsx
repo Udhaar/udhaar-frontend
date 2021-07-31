@@ -2,14 +2,13 @@ import React, { Fragment, useState, useContext } from "react";
 import { toast } from "react-toastify";
 import { declineOrAcceptTransaction } from "../../../api/api";
 import { Dialog, Transition } from "@headlessui/react";
-import GlobalContext from "../../../GlobalContext";
+import { useSelector } from "react-redux";
 
 export const PendingTransactionCard = ({ transaction }) => {
   const [openDeclineForm, setOpenDeclineForm] = useState(false);
   const [openAcceptDialog, setOpenAcceptDialog] = useState(false);
   const [declineMessage, setDeclineMessage] = useState("");
-  // const { currentUser } = useContext(GlobalContext);
-  const globalContext = useContext(GlobalContext);
+  const currentUser = useSelector((state) => state.ui.currentUser);
 
   const handleSubmit = async (accept) => {
     let data = {};
@@ -44,7 +43,7 @@ export const PendingTransactionCard = ({ transaction }) => {
     <div className="bg-primary w-[13rem] md:w-[17rem] h-[9.91rem] flex flex-col justify-between px-5 py-2 my-2 mx-auto rounded-2xl flex-grow-0 flex-shrink-0">
       <h6 className="text-xs text-center">
         {" "}
-        {transaction.payer === globalContext.state.currentUser.external_id
+        {transaction.payer === currentUser.external_id
           ? "You gave"
           : "You took"}
       </h6>
@@ -102,8 +101,7 @@ export const PendingTransactionCard = ({ transaction }) => {
                     </Dialog.Title>
                     <div>
                       You are{" "}
-                      {transaction.payer ===
-                      globalContext.state.currentUser.external_id
+                      {transaction.payer === currentUser.external_id
                         ? "giving"
                         : "taking"}{" "}
                       ₹{transaction.amount} for {transaction.message}

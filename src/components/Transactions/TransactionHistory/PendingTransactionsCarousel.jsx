@@ -29,7 +29,10 @@ export const PendingTransactionsCarousel = ({ pendingTransactions }) => {
         style={{ scrollBehavior: "smooth" }}
       >
         {pendingTransactions.map((transaction) => (
-          <PendingTransactionCard transaction={transaction} />
+          <PendingTransactionCard
+            transaction={transaction}
+            key={transaction.external_id}
+          />
         ))}
       </div>
 

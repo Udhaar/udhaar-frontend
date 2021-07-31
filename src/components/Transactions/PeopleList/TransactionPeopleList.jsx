@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PeopleListItem } from "./PeopleListItem";
-import { TransactionContext } from "../../../pages/Transactions";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBalances } from "../../../redux/balances/actions";
 import { openNavbar } from "../../../redux/ui/actions";
 
 export const TransactionPeopleList = () => {
-  const [newstate, setnewstate] = useState({});
   const dispatch = useDispatch();
   const balances = useSelector((state) => state.balance.balances);
   useEffect(() => {
