@@ -1,14 +1,22 @@
-import React, { Fragment, useState, useContext } from "react";
+import React, { Fragment, useState } from "react";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { declineOrAcceptTransaction } from "../../../api/api";
 import { Dialog, Transition } from "@headlessui/react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchTransactions,
+  fetchSelectedUser,
+} from "../../../redux/transactions/actions";
+import { fetchBalances } from "../../../redux/balances/actions";
 
 export const PendingTransactionCard = ({ transaction }) => {
   const [openDeclineForm, setOpenDeclineForm] = useState(false);
   const [openAcceptDialog, setOpenAcceptDialog] = useState(false);
   const [declineMessage, setDeclineMessage] = useState("");
+  const selectedUser = useSelector((state) => state.transaction.selectedUser);
   const currentUser = useSelector((state) => state.ui.currentUser);
+  const dispatch = useDispatch();
 
   const handleSubmit = async (accept) => {
     let data = {};
@@ -35,7 +43,9 @@ export const PendingTransactionCard = ({ transaction }) => {
         setOpenDeclineForm(false);
         toast.success(`Transaction declined successfully`);
       }
-      fetchPeopleList();
+      dispatch(fetchBalances());
+      dispatch(fetchTransactions(selectedUser.user.external_id));
+      dispatch(fetchSelectedUser(selectedUser.user.external_id));
     }
   };
 

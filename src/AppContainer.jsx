@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchCurrentUser } from "./redux/ui/actions";
 import { BeforeLoginRouter } from "./routers/BeforeLoginRouter";
 import { MainRouter } from "./routers/MainRouter";
+import { ToastContainer } from "react-toastify";
 
 export const AppContainer = () => {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ export const AppContainer = () => {
 
   return (
     <div className="h-screen bg-white">
+      <ToastContainer />
       {currentUser ? <MainRouter /> : <BeforeLoginRouter />}
     </div>
   );
