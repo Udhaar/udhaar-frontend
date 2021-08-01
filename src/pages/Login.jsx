@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import PasswordInput from "../components/form/PasswordInput";
 import TextInput from "../components/form/TextInput";
 import LargeButton from "../components/buttons/LargeButton";
-import { Link } from "react-router-dom";
 import AccentedLink from "../components/typography/AccentedLink";
 import SecondaryLogo from "../components/Images/SecondaryLogo";
 import { signin } from "../api/api";
