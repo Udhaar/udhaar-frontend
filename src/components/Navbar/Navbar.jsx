@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import LargeButton from "../buttons/LargeButton";
 import NavbarLink from "./NavbarLink";
 import { Link } from "react-router-dom";
@@ -14,6 +14,7 @@ export default function Navbar() {
   const currentUser = useSelector((state) => state.ui.currentUser);
   const currentPage = useSelector((state) => state.ui.currentPage);
   const dispatch = useDispatch();
+  const navContainer = useRef(null);
 
   return (
     <div
@@ -21,11 +22,18 @@ export default function Navbar() {
         navbarOpen ? "translate-x-0" : "-translate-x-full md2:translate-x-0"
       }
       w-screen md2:w-auto h-screen bg-black bg-opacity-50 absolute  left-0 top-0 md2:static transition duration-200 ease-in-out z-50`}
+      onClick={(e) => {
+        if (e.target === navContainer.current) {
+          dispatch(closeNavbar());
+        }
+        e.stopPropagation();
+      }}
     >
       <div
         className={`${
           navbarOpen ? "translate-x-0" : "-translate-x-full  md2:translate-x-0"
         } flex flex-shrink-0 flex-grow-0 justify-between w-full transition duration-200 ease-in-out transform`}
+        ref={navContainer}
       >
         <div
           className={` w-64 md2:w-full bg-primary h-screen flex flex-col items-center py-6 justify-between`}
