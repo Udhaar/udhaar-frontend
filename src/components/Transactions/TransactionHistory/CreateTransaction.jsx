@@ -8,7 +8,7 @@ import { fetchTransactions } from "../../../redux/transactions/actions";
 
 export const CreateTransactionComponent = ({ external_id }) => {
   const [formData, setFormData] = useState({
-    amount: null,
+    amount: 0,
     gaveOrTook: "gave",
   });
   const [date, setDate] = useState(new Date());

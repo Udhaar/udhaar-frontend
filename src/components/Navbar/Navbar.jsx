@@ -20,7 +20,7 @@ export default function Navbar() {
       className={`${
         navbarOpen ? "translate-x-0" : "-translate-x-full md2:translate-x-0"
       }
-      w-screen md2:w-auto h-screen bg-black bg-opacity-50 absolute  left-0 top-0 md2:static transition duration-200 ease-in-out`}
+      w-screen md2:w-auto h-screen bg-black bg-opacity-50 absolute  left-0 top-0 md2:static transition duration-200 ease-in-out z-50`}
     >
       <div
         className={`${
