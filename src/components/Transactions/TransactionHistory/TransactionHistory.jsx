@@ -92,8 +92,8 @@ export const TransactionHistory = ({ external_id }) => {
           pendingTransactions={pendingTransactions}
         />
       </div>
-      <div>
-        <div className="flex flex-col space-y-1 overflow-auto">
+      <div className="flex flex-col overflow-auto">
+        <div className="flex flex-col space-y-1 mb-1 overflow-auto">
           {historyTransactions.map((transaction) => (
             <TransactionCard
               transaction={transaction}
