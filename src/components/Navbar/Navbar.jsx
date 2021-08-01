@@ -1,5 +1,4 @@
-import React, { useCallback, useContext } from "react";
-// import GlobalContext from "../../GlobalContext";
+import React from "react";
 import LargeButton from "../buttons/LargeButton";
 import NavbarLink from "./NavbarLink";
 import { Link } from "react-router-dom";
@@ -8,7 +7,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { closeNavbar } from "../../redux/ui/actions";
 
 export default function Navbar() {
-  // const globalContext = useContext(GlobalContext);
   const history = useHistory();
   const navbarOpen = useSelector((state) => {
     return state.ui.navbarOpen;
