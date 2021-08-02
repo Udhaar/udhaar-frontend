@@ -165,7 +165,10 @@ export const TransactionPeopleList = () => {
               />
             ))
           ) : (
-            <div>No people</div>
+            <div className="flex items-center flex-col justify-center text-secondary text-2xl h-full gap-1">
+              No people <br />
+              <div className="text-lg font-semibold">Click + to start</div>
+            </div>
           )}
         </div>
         <svg
