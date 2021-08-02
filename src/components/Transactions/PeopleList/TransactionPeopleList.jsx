@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment, useState } from "react";
+import React, { useEffect, Fragment, useState, useMemo } from "react";
 import { PeopleListItem } from "./PeopleListItem";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBalances } from "../../../redux/balances/actions";
@@ -12,6 +12,56 @@ export const TransactionPeopleList = () => {
   const [searchEmail, setSearchEmail] = React.useState("");
   const balances = useSelector((state) => state.balance.balances);
   const history = useHistory();
+  const [modifications, setModifications] = useState({
+    sort: "",
+    filter: "",
+    order: "ascending",
+    query: "",
+  });
+  const modifiedBalances = useMemo(() => {
+    return [...balances]
+      .sort((b1, b2) => {
+        switch (modifications.sort) {
+          case "amount":
+            return (
+              (modifications.order === "ascending" ? 1 : -1) *
+              (Math.abs(b1.balance) - Math.abs(b2.balance))
+            );
+          case "name":
+            return (
+              (modifications.order === "ascending" ? 1 : -1) *
+              (b1.user.first_name + b1.user.last_name)
+                .toLowerCase()
+                .localeCompare(
+                  (b2.user.first_name + b2.user.lastName).toLowerCase()
+                )
+            );
+          default:
+            return 0;
+        }
+      })
+      .filter((balance) => {
+        switch (modifications.filter) {
+          case "to_take":
+            return balance.balance > 0;
+          case "to_give":
+            return balance.balance < 0;
+          default:
+            return true;
+        }
+      })
+      .filter((balance) => {
+        return (
+          balance.user.first_name +
+          " " +
+          balance.user.last_name +
+          " " +
+          balance.user.email
+        )
+          .toLowerCase()
+          .includes(modifications.query);
+      });
+  }, [balances, modifications]);
 
   useEffect(() => {
     dispatch(fetchBalances());
@@ -24,6 +74,7 @@ export const TransactionPeopleList = () => {
       history.push(`/transactions/${response[1].external_id}`);
     }
   };
+
   return (
     <>
       <div className="flex flex-col justify-between items-between h-screen relative">
@@ -47,7 +98,14 @@ export const TransactionPeopleList = () => {
             <input
               type="text"
               placeholder="Find people"
-              className="w-full rounded-lg text-lg px-4 py-2 top-0 inline-block outline-none border-none bg-primary "
+              className="w-full rounded-lg text-lg px-4 py-2 top-0 inline-block outline-none border-none bg-primary"
+              value={modifications.query}
+              onChange={(e) =>
+                setModifications({
+                  ...modifications,
+                  query: e.target.value.toLowerCase(),
+                })
+              }
             />
           </div>
           <div className="text-sm justify-between my-2">
@@ -57,9 +115,24 @@ export const TransactionPeopleList = () => {
                 name="sort_by"
                 id="sort_by"
                 className="bg-primary outline-none cursor-pointer h-8 text-xs py-0 rounded flex-grow"
+                onChange={(e) =>
+                  setModifications({ ...modifications, sort: e.target.value })
+                }
               >
-                <option value="Name">Name</option>
-                <option value="Amount">Amount</option>
+                <option value="">Last Modified</option>
+                <option value="name">Name</option>
+                <option value="amount">Amount</option>
+              </select>
+              <select
+                name="order"
+                id="order"
+                className="bg-primary outline-none cursor-pointer h-8 text-xs py-0 rounded flex-grow"
+                onChange={(e) =>
+                  setModifications({ ...modifications, order: e.target.value })
+                }
+              >
+                <option value="ascending">Ascending</option>
+                <option value="descending">Descending</option>
               </select>
             </div>
             <div className="bg-primary rounded-md p-2 gap-2 mb-2 flex items-center">
@@ -68,16 +141,20 @@ export const TransactionPeopleList = () => {
                 name="filter_by"
                 id="filter_by"
                 className="bg-primary outline-none cursor-pointer h-8 text-xs py-0 rounded flex-grow"
+                onChange={(e) =>
+                  setModifications({ ...modifications, filter: e.target.value })
+                }
               >
-                <option value="Name">Money you owe</option>
-                <option value="Amount">Money to pay</option>
+                <option value="">None</option>
+                <option value="to_take">Money you owe</option>
+                <option value="to_give">Money to pay</option>
               </select>
             </div>
           </div>
         </div>
         <div className="overflow-auto flex-grow ">
-          {balances?.length > 0 ? (
-            balances?.map((balance) => (
+          {modifiedBalances?.length > 0 ? (
+            modifiedBalances?.map((balance) => (
               <PeopleListItem
                 firstName={balance.user.first_name}
                 balance={balance.balance}
