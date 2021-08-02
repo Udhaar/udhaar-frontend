@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 export const TransactionCard = ({ transaction }) => {
   const selectedUser = useSelector((state) => state.transaction.selectedUser);
-  const gave = transaction.receiver === selectedUser;
+  const gave = transaction.receiver === selectedUser.user.external_id;
   const color =
     status === 1 ? "border-primary" : gave ? "border-safe" : "border-danger";
 
