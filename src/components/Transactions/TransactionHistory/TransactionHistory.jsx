@@ -45,6 +45,7 @@ export const TransactionHistory = ({ external_id }) => {
           );
         })
         .sort((t1, t2) => {
+          // bug
           return t1.created_date - t2.created_date || t1.status - t2.status;
         }),
     [transactions, external_id]
