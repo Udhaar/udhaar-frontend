@@ -6,11 +6,13 @@ import { openNavbar } from "../../../redux/ui/actions";
 import { Dialog, Transition } from "@headlessui/react";
 import { searchUser } from "../../../api/api";
 import { useHistory } from "react-router";
+import { PeopleListDummyItem } from "./PeopleListDummyItem";
 export const TransactionPeopleList = () => {
   const dispatch = useDispatch();
   const [openSearchForm, setOpenSearchForm] = useState(false);
   const [searchEmail, setSearchEmail] = React.useState("");
   const balances = useSelector((state) => state.balance.balances);
+  const balancesLoading = useSelector((state) => state.balance.loading);
   const history = useHistory();
   const [modifications, setModifications] = useState({
     sort: "",
@@ -153,7 +155,14 @@ export const TransactionPeopleList = () => {
           </div>
         </div>
         <div className="overflow-auto flex-grow ">
-          {modifiedBalances?.length > 0 ? (
+          {balancesLoading ? (
+            <>
+              <PeopleListDummyItem />
+              <PeopleListDummyItem />
+              <PeopleListDummyItem />
+              <PeopleListDummyItem />
+            </>
+          ) : modifiedBalances?.length > 0 ? (
             modifiedBalances?.map((balance) => (
               <PeopleListItem
                 firstName={balance.user.first_name}
