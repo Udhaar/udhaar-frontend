@@ -8,6 +8,7 @@ import {
 import { TransactionCard } from "./TransactionCard";
 import { CreateTransactionComponent } from "./CreateTransaction";
 import { Rectangle } from "../../dummy/Rectangle";
+import { TransactionCardDummy } from "./TransactionCardDummy";
 
 export const TransactionHistory = ({ external_id }) => {
   const [pendingTransactions, setPendingTransactions] = useState([]);
@@ -22,6 +23,7 @@ export const TransactionHistory = ({ external_id }) => {
 
   const personInfo = useSelector((state) => state.transaction.selectedUser);
   const transactions = useSelector((state) => state.transaction.transactions);
+  const transactionsLoading = useSelector((state) => state.transaction.loading);
   const selectedUser = useSelector((state) => state.transaction.selectedUser);
 
   useEffect(() => {
@@ -116,12 +118,21 @@ export const TransactionHistory = ({ external_id }) => {
       </div>
       <div className="flex flex-col overflow-auto">
         <div className="flex flex-col space-y-1 mb-1 overflow-auto">
-          {historyTransactions.map((transaction) => (
-            <TransactionCard
-              transaction={transaction}
-              key={transaction.external_id}
-            />
-          ))}
+          {!transactionsLoading ? (
+            historyTransactions.map((transaction) => (
+              <TransactionCard
+                transaction={transaction}
+                key={transaction.external_id}
+              />
+            ))
+          ) : (
+            <>
+              <TransactionCardDummy />
+              <TransactionCardDummy />
+              <TransactionCardDummy />
+              <TransactionCardDummy />
+            </>
+          )}
         </div>
         <CreateTransactionComponent external_id={external_id} />
       </div>
