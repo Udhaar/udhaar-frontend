@@ -26,7 +26,7 @@ export const fetchBalancesFail = (error) => {
 
 export const fetchBalances = () => {
   return (dispatch) => {
-    dispatch(fetchBalancesRequest);
+    dispatch(fetchBalancesRequest());
     getBalances().then((response) => {
       response[0].status === 200
         ? dispatch(fetchBalancesSuccess(response[1].results))
