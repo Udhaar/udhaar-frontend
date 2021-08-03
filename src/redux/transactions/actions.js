@@ -36,7 +36,7 @@ export const setSelectedUser = (user) => {
 
 export const fetchTransactions = (external_id) => {
   return (dispatch) => {
-    dispatch(fetchTransactionsRequest);
+    dispatch(fetchTransactionsRequest());
     transactionList({
       user_external_id: external_id,
     }).then((response) => {
