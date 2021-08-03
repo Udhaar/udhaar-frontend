@@ -7,6 +7,7 @@ import {
 } from "../../../redux/transactions/actions";
 import { TransactionCard } from "./TransactionCard";
 import { CreateTransactionComponent } from "./CreateTransaction";
+import { Rectangle } from "../../dummy/Rectangle";
 
 export const TransactionHistory = ({ external_id }) => {
   const [pendingTransactions, setPendingTransactions] = useState([]);
@@ -75,18 +76,38 @@ export const TransactionHistory = ({ external_id }) => {
             </svg>
           </div>
           <div className="pr-3 md:pl-3 py-2 transition flex-grow text-white">
-            <div className="flex justify-between text-2xl">
-              <h3>
-                {personInfo?.user.first_name + " " + personInfo?.user.last_name}
-              </h3>
-              <p> ₹ {Math.abs(personInfo?.balance)} </p>
-            </div>
-            <div className="flex justify-between text-sm">
-              <h3>{personInfo?.user.email}</h3>
-              <p>
-                {personInfo?.balance >= 0 ? "You will get" : "You will pay"}
-              </p>
-            </div>
+            {personInfo ? (
+              <>
+                <div className="flex justify-between text-2xl">
+                  <h3>
+                    {personInfo?.user.first_name +
+                      " " +
+                      personInfo?.user.last_name}
+                  </h3>
+                  <p> ₹ {Math.abs(personInfo?.balance)} </p>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <h3>{personInfo?.user.email}</h3>
+                  <p>
+                    {personInfo?.balance >= 0 ? "You will get" : "You will pay"}
+                  </p>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex justify-between h-8 animate-pulse mb-2">
+                  <div className="flex gap-3">
+                    <Rectangle width="w-32" bg="bg-blue-400 opacity-50" />
+                    <Rectangle width="w-32" bg="bg-blue-400 opacity-50" />
+                  </div>
+                  <Rectangle width="w-20" bg="bg-blue-400 opacity-50" />
+                </div>
+                <div className="flex justify-between animate-pulse h-3">
+                  <Rectangle width="w-20" bg="bg-blue-400 opacity-50" />
+                  <Rectangle width="w-16" bg="bg-blue-400 opacity-50" />
+                </div>
+              </>
+            )}
           </div>
         </div>
         <PendingTransactionsCarousel
