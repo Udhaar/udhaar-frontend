@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware, combineReducers } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
+import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import { uiReducer } from "./ui/uiReducer";
 import { balanceReducer } from "./balances/balanceReducer";
 import { transactionReducer } from "./transactions/transactionReducer";
